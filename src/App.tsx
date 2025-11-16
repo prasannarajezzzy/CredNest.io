@@ -471,7 +471,7 @@ const ComparisonTable = () => (
       {/* Table Rows */}
       <TableRow
         param="Interest Rates"
-        jugyahValue="From 8.41% PA"
+        jugyahValue="From 7.35% PA"
         traditionalValue="High Interest Rates"
         jugyahIcon="check"
         traditionalIcon="x"
@@ -594,10 +594,76 @@ interface TestimonialCardProps {
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, role, review, rating, image, isMain = false }) => {
   if (isMain) {
     return (
-      <div className="bg-gray-900 text-white p-8 rounded-2xl border border-gray-800 shadow-xl flex flex-col md:flex-row gap-6">
-        <div className="flex-1">
-          <div className="flex items-center space-x-4 mb-4">
-            <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-lg">
+      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white p-8 rounded-3xl border border-gray-700 shadow-2xl flex flex-col md:flex-row gap-8 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500 rounded-full -translate-y-32 translate-x-32"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-400 rounded-full translate-y-24 -translate-x-24"></div>
+        </div>
+        
+        <div className="flex-1 relative z-10">
+          <div className="flex items-center space-x-5 mb-6">
+            <div className="relative">
+              <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-xl ring-4 ring-emerald-500/20">
+                {image ? (
+                  <img src={image} alt={name} className="w-full h-full rounded-full object-cover" onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }} />
+                ) : (
+                  name.charAt(0)
+                )}
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-400 rounded-full flex items-center justify-center">
+                <Star className="w-3 h-3 text-white fill-white" />
+              </div>
+            </div>
+            <div>
+              <div className="font-bold text-xl text-white">{name}</div>
+              <div className="text-sm text-emerald-300 font-semibold bg-emerald-900/30 px-3 py-1 rounded-full inline-block mt-1">{role}</div>
+            </div>
+          </div>
+          <div className="mb-6">
+            <div className="text-6xl text-emerald-400/20 font-serif leading-none">"</div>
+            <p className="text-gray-100 leading-relaxed text-lg -mt-4 pl-8">
+              {review}
+            </p>
+            <div className="text-6xl text-emerald-400/20 font-serif leading-none text-right -mt-2">"</div>
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-1">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className={`w-6 h-6 ${i < rating ? 'text-amber-400 fill-amber-400' : 'text-gray-600'}`} />
+              ))}
+              <span className="ml-3 text-sm text-gray-300 font-medium">Verified Customer</span>
+            </div>
+          </div>
+        </div>
+        
+        {image && (
+          <div className="flex-shrink-0 relative z-10">
+            <div className="relative">
+              <img 
+                src={image} 
+                alt={name}
+                className="w-40 h-40 rounded-2xl object-cover border-4 border-emerald-500/30 shadow-2xl"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-emerald-900/20 to-transparent"></div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white p-7 rounded-2xl border border-gray-200 shadow-lg flex flex-col justify-between h-full hover:shadow-2xl hover:border-emerald-200 transition-all duration-300 transform hover:-translate-y-1 group">
+      <div>
+        <div className="flex items-start space-x-4 mb-5">
+          <div className="relative">
+            <div className="w-14 h-14 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-full flex items-center justify-center text-emerald-700 text-lg font-bold shadow-md group-hover:shadow-lg transition-shadow">
               {image ? (
                 <img src={image} alt={name} className="w-full h-full rounded-full object-cover" onError={(e) => {
                   e.currentTarget.style.display = 'none';
@@ -606,63 +672,30 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, role, review, r
                 name.charAt(0)
               )}
             </div>
-            <div>
-              <div className="font-bold text-lg">{name}</div>
-              <div className="text-sm text-gray-400 font-medium">{role}</div>
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
+              <Star className="w-2.5 h-2.5 text-white fill-white" />
             </div>
           </div>
-          <p className="text-gray-200 leading-relaxed mb-4">
-            &ldquo;{review}&rdquo;
+          <div className="flex-1">
+            <div className="font-bold text-gray-900 text-lg group-hover:text-emerald-700 transition-colors">{name}</div>
+            <div className="text-sm text-gray-600 font-medium bg-gray-100 px-2 py-1 rounded-full inline-block mt-1">{role}</div>
+          </div>
+        </div>
+        <div className="mb-5">
+          <div className="text-3xl text-emerald-200 font-serif leading-none">"</div>
+          <p className="text-sm text-gray-700 leading-relaxed -mt-2 pl-4">
+            {review}
           </p>
-          <div className="flex items-center">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className={`w-5 h-5 ${i < rating ? 'text-amber-400 fill-amber-400' : 'text-gray-600'}`} />
-            ))}
-          </div>
-        </div>
-        {image && (
-          <div className="flex-shrink-0">
-            <img 
-              src={image} 
-              alt={name}
-              className="w-32 h-32 rounded-full object-cover border-4 border-emerald-500"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  return (
-    <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-lg flex flex-col justify-between h-full hover:shadow-xl transition-all duration-300">
-      <div className="flex items-start space-x-4 mb-4">
-        <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-lg font-bold shadow-md">
-          {image ? (
-            <img src={image} alt={name} className="w-full h-full rounded-full object-cover" onError={(e) => {
-              e.currentTarget.style.display = 'none';
-            }} />
-          ) : (
-            name.charAt(0)
-          )}
-        </div>
-        <div>
-          <div className="font-bold text-gray-900">{name}</div>
-          <div className="text-xs text-gray-600 font-medium">{role}</div>
+          <div className="text-3xl text-emerald-200 font-serif leading-none text-right -mt-1">"</div>
         </div>
       </div>
-      <div className="mb-4">
-        <p className="text-sm text-gray-700 line-clamp-4 leading-relaxed">
-          &ldquo;{review}&rdquo;
-        </p>
-      </div>
-      <div className="pt-4 border-t border-gray-200 flex items-center">
-        {[...Array(5)].map((_, i) => (
-          <Star key={i} className={`w-4 h-4 ${i < rating ? 'text-amber-400 fill-amber-400' : 'text-gray-300'}`} />
-        ))}
-        <span className="ml-2 text-xs text-gray-500 font-medium">{rating}/5</span>
+      <div className="pt-5 border-t border-gray-200 flex items-center justify-between">
+        <div className="flex items-center space-x-1">
+          {[...Array(5)].map((_, i) => (
+            <Star key={i} className={`w-4 h-4 ${i < rating ? 'text-amber-400 fill-amber-400' : 'text-gray-300'}`} />
+          ))}
+        </div>
+        <span className="text-xs text-gray-500 font-medium bg-gray-50 px-2 py-1 rounded-full">Verified Review</span>
       </div>
     </div>
   );
@@ -671,54 +704,98 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, role, review, r
 const TestimonialsSection = () => {
   const reviews = [
     { 
-      name: 'Rohan Raut', 
-      role: 'Homeowner', 
-      review: "I secured my home loan with CrediNest and couldn't be happier. The team was incredibly helpful throughout the process, and their negotiation skills helped me get a better rate than I expected. Highly recommend!", 
+      name: 'Shubham Shine', 
+      role: 'Software Engineer & Homeowner', 
+      review: "CrediNest transformed my home buying journey completely! As a first-time buyer, I was overwhelmed by the loan process, but their team guided me through every step. They secured me an interest rate that was 0.5% lower than what other banks offered. The digital documentation process saved me countless trips to the bank. What impressed me most was their transparency - no hidden charges, clear communication, and they delivered exactly what they promised. My loan was approved in just 12 days!", 
       rating: 5,
-      image: '/static/image_21.jpeg',
+      image: '/static/feedback_profile/sHUBHAM SHINE.jpeg',
       isMain: true
     },
     { 
-      name: 'Rohit Govinda', 
+      name: 'Neha Aggarwal', 
+      role: 'Marketing Manager', 
+      review: "Outstanding service from CrediNest! They helped me with a balance transfer that saved me ₹3 lakhs in interest over the loan tenure. The team was professional, responsive, and made the entire process seamless. Highly recommend their expertise!", 
+      rating: 5,
+      image: '/static/feedback_profile/nEHA AGGARWAL .jpg'
+    },
+    { 
+      name: 'Krishna Salunke', 
       role: 'Business Owner', 
-      review: "The personalized support I received from the CrediNest team was exceptional. They found me a loan rate I couldn't get anywhere else.", 
+      review: "I needed a loan against property for business expansion. CrediNest not only got me the best rates but also ensured quick processing. Their relationship manager was available 24/7 to answer my queries. Excellent service and genuine care for customers.", 
       rating: 5,
-      image: '/static/image_17.jpeg'
+      image: '/static/feedback_profile/kRISHNA SALUNKE.jpg'
     },
     { 
-      name: 'Sneha Prajapati', 
-      role: 'IT Professional', 
-      review: "Applying for a home loan felt overwhelming until I used CrediNest. The process was transparent, quick, and the dedicated relationship manager was a huge help.", 
+      name: 'Vishal Gupta', 
+      role: 'Financial Consultant', 
+      review: "As someone in the finance industry, I appreciate CrediNest's professional approach and competitive rates. They provided multiple loan options and helped me choose the best one for my investment property. The entire process was transparent and efficient.", 
       rating: 5,
-      image: '/static/image_15.jpeg'
-    },
-    { 
-      name: 'Amit Singh', 
-      role: 'Startup Founder', 
-      review: "I needed quick funding for my startup. CrediNest's pre-qualified offers saved me weeks of research. Got the funds in 48 hours.", 
-      rating: 5,
-      image: '/static/image_14.jpeg'
+      image: '/static/feedback_profile/Vishal-gUPTA.jpg'
     },
   ];
 
   return (
     <section id="testimonials" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2 font-display flex items-center justify-center gap-2">
+      <div className="text-center mb-16">
+        <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+          <Star className="w-4 h-4 fill-emerald-700" />
+          Customer Stories
+        </div>
+        <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4 font-display">
           Hear what our clients have to say about us
-          <span className="text-red-500">❤️</span>
+          <span className="text-red-500 ml-2">❤️</span>
         </h2>
-        <p className="text-gray-600">Trusted by thousands of satisfied customers</p>
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          Join thousands of satisfied customers who trusted CrediNest for their loan journey
+        </p>
+        <div className="flex items-center justify-center gap-6 mt-6">
+          <div className="flex items-center gap-2">
+            <div className="flex">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-5 h-5 text-amber-400 fill-amber-400" />
+              ))}
+            </div>
+            <span className="text-sm font-semibold text-gray-700">4.9/5 Rating</span>
+          </div>
+          <div className="w-px h-6 bg-gray-300"></div>
+          <div className="text-sm font-semibold text-gray-700">6000+ Happy Customers</div>
+        </div>
       </div>
-      <div className="mb-8">
+      
+      <div className="mb-12">
         {reviews.filter(r => r.isMain).map((review, index) => (
           <TestimonialCard key={index} {...review} />
         ))}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {reviews.filter(r => !r.isMain).map((review, index) => (
           <TestimonialCard key={index} {...review} />
         ))}
+      </div>
+      
+      <div className="text-center mt-12">
+        <div className="bg-gradient-to-r from-emerald-50 to-blue-50 p-8 rounded-2xl border border-emerald-200">
+          <h3 className="text-2xl font-bold text-gray-900 mb-3">Ready to join our satisfied customers?</h3>
+          <p className="text-gray-600 mb-6">Experience the CrediNest difference - transparent, fast, and customer-focused loan services.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button 
+              onClick={() => scrollToSection('calculator')}
+              className="text-base font-semibold text-white bg-emerald-600 hover:bg-emerald-700 py-3 px-8 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+            >
+              Calculate Your EMI
+            </button>
+            <a 
+              href="https://wa.me/917021904923"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-base font-semibold text-emerald-700 bg-white border-2 border-emerald-200 hover:border-emerald-300 hover:bg-emerald-50 py-3 px-8 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+            >
+              <MessageCircle className="w-5 h-5" />
+              Get Expert Advice
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );
