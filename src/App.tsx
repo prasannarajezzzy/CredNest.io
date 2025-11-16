@@ -168,7 +168,7 @@ const App = () => {
         <TestimonialsSection />
         <PersonalizedAdviceSection />
         <LoanCalculatorSection />
-        <OtherCalculators />
+        {/* <OtherCalculators /> */}
         <LoanTipsSection />
         <FAQSection />
       </main>
