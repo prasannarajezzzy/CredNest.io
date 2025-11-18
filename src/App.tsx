@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, Check, X, Star, BarChart3, Calculator, TrendingUp, Clock, Menu, ArrowRight, MessageCircle, Shield, FileText, Headphones, Mail, Phone, User } from 'lucide-react';
+import { profileImages, handleImageError } from './assets/images';
 
 // Smooth scroll helper function
 const scrollToSection = (id: string) => {
@@ -168,7 +169,7 @@ const App = () => {
         <TestimonialsSection />
         <PersonalizedAdviceSection />
         <LoanCalculatorSection />
-        {/* <OtherCalculators /> */}
+        <OtherCalculators />
         <LoanTipsSection />
         <FAQSection />
       </main>
@@ -646,9 +647,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, role, review, r
                 src={image} 
                 alt={name}
                 className="w-40 h-40 rounded-2xl object-cover border-4 border-emerald-500/30 shadow-2xl"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
+                onError={handleImageError}
               />
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-emerald-900/20 to-transparent"></div>
             </div>
@@ -665,9 +664,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, role, review, r
           <div className="relative">
             <div className="w-14 h-14 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-full flex items-center justify-center text-emerald-700 text-lg font-bold shadow-md group-hover:shadow-lg transition-shadow">
               {image ? (
-                <img src={image} alt={name} className="w-full h-full rounded-full object-cover" onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }} />
+                <img src={image} alt={name} className="w-full h-full rounded-full object-cover" onError={handleImageError} />
               ) : (
                 name.charAt(0)
               )}
@@ -708,7 +705,7 @@ const TestimonialsSection = () => {
       role: 'Software Engineer & Homeowner', 
       review: "CrediNest transformed my home buying journey completely! As a first-time buyer, I was overwhelmed by the loan process, but their team guided me through every step. They secured me an interest rate that was 0.5% lower than what other banks offered. The digital documentation process saved me countless trips to the bank. What impressed me most was their transparency - no hidden charges, clear communication, and they delivered exactly what they promised. My loan was approved in just 12 days!", 
       rating: 5,
-      image: '/static/feedback_profile/sHUBHAM SHINE.jpeg',
+      image: profileImages.shubhamShine,
       isMain: true
     },
     { 
@@ -716,21 +713,21 @@ const TestimonialsSection = () => {
       role: 'Marketing Manager', 
       review: "Outstanding service from CrediNest! They helped me with a balance transfer that saved me ₹3 lakhs in interest over the loan tenure. The team was professional, responsive, and made the entire process seamless. Highly recommend their expertise!", 
       rating: 5,
-      image: '/static/feedback_profile/nEHA AGGARWAL .jpg'
+      image: profileImages.nehaAggarwal
     },
     { 
       name: 'Krishna Salunke', 
       role: 'Business Owner', 
       review: "I needed a loan against property for business expansion. CrediNest not only got me the best rates but also ensured quick processing. Their relationship manager was available 24/7 to answer my queries. Excellent service and genuine care for customers.", 
       rating: 5,
-      image: '/static/feedback_profile/kRISHNA SALUNKE.jpg'
+      image: profileImages.krishnaSalunke
     },
     { 
       name: 'Vishal Gupta', 
       role: 'Financial Consultant', 
       review: "As someone in the finance industry, I appreciate CrediNest's professional approach and competitive rates. They provided multiple loan options and helped me choose the best one for my investment property. The entire process was transparent and efficient.", 
       rating: 5,
-      image: '/static/feedback_profile/Vishal-gUPTA.jpg'
+      image: profileImages.vishalGupta
     },
   ];
 
