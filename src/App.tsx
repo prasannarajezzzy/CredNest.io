@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, Check, X, Star, BarChart3, Calculator, TrendingUp, Clock, Menu, ArrowRight, MessageCircle, Shield, FileText, Headphones, Mail, Phone, User } from 'lucide-react';
+import { ChevronDown, Check, X, Star, TrendingUp, Menu, ArrowRight, MessageCircle, Shield, FileText, Headphones, Mail, Phone, User } from 'lucide-react';
 import { profileImages, handleImageError } from './assets/images';
 import LoanApplicationModal from './components/LoanApplicationModal';
 import AdminPortal from './components/AdminPortal';
@@ -176,7 +176,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header onGetStarted={() => setIsLoanModalOpen(true)} />
+      <Header />
       <main>
         <HeroSection onGetStarted={() => setIsLoanModalOpen(true)} />
         <PartnersSection />
@@ -208,7 +208,7 @@ const App = () => {
 };
 
 // --- Component 1: Header ---
-const Header = ({ onGetStarted }: { onGetStarted?: () => void }) => {
+const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
@@ -1042,6 +1042,7 @@ const LoanCalculatorSection = () => {
 };
 
 // --- Component 9: Other Calculators ---
+/*
 interface CalcCardProps {
   icon: React.ComponentType<{ className?: string }>;
   title: string;
@@ -1060,7 +1061,9 @@ const CalcCard: React.FC<CalcCardProps> = ({ icon: Icon, title, description }) =
     </button>
   </div>
 );
+*/
 
+/*
 const OtherCalculators = () => (
   <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
     <div className="text-center mb-12">
@@ -1086,8 +1089,10 @@ const OtherCalculators = () => (
     </div>
   </section>
 );
+*/
 
 // --- Component 10: Loan Tips & Guide Section ---
+/*
 interface TipCardProps {
   title: string;
   author: string;
@@ -1124,7 +1129,9 @@ const TipCard: React.FC<TipCardProps> = ({ title, author, readTime, image }) => 
     </div>
   </a>
 );
+*/
 
+/*
 const LoanTipsSection = () => {
   const tips = [
     {
@@ -1167,6 +1174,7 @@ const LoanTipsSection = () => {
     </section>
   );
 };
+*/
 
 // --- Component 11: FAQ Section ---
 interface FAQItemProps {

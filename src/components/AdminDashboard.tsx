@@ -5,12 +5,8 @@ import {
   CheckCircle, 
   XCircle, 
   Clock, 
-  TrendingUp,
   Search,
-  Filter,
-  Download,
   Eye,
-  Edit3,
   LogOut,
   RefreshCw
 } from 'lucide-react';

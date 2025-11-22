@@ -5,17 +5,13 @@ import {
   CheckCircle, 
   XCircle, 
   Clock, 
-  TrendingUp,
   Search,
-  Filter,
-  Download,
   Eye,
-  Edit3,
   LogOut,
   RefreshCw,
-  Save,
   X,
-  Check
+  Check,
+  Edit3
 } from 'lucide-react';
 import { getLoanApplications, updateApplicationStatus, getDashboardStats, updateApplicationData } from '../api/loanApplication';
 

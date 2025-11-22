@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ArrowRight, Home, Building2, Briefcase, DollarSign, Phone, Check } from 'lucide-react';
+import { ChevronLeft, Home, Building2, Briefcase, DollarSign, Check } from 'lucide-react';
 import { saveLoanApplication, LoanApplicationData } from '../api/loanApplication';
 
 interface LoanApplicationModalProps {
