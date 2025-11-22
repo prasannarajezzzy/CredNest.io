@@ -10,12 +10,12 @@ export interface LoanApplicationData {
   createdAt?: Date;
 }
 
-const API_BASE_URL = 'http://localhost:5000/api';
+import { getApiUrl } from '../config/api';
 
 // Save loan application to MongoDB via backend API
 export const saveLoanApplication = async (data: LoanApplicationData): Promise<{ success: boolean; id?: string; error?: string; applicationNumber?: string }> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/loan-applications`, {
+    const response = await fetch(getApiUrl('/loan-applications'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export const saveLoanApplication = async (data: LoanApplicationData): Promise<{ 
 // Get all loan applications (Admin only)
 export const getLoanApplications = async (token: string, page = 1, limit = 10): Promise<{ success: boolean; data?: any; error?: string }> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/loan-applications?page=${page}&limit=${limit}`, {
+    const response = await fetch(getApiUrl(`/loan-applications?page=${page}&limit=${limit}`), {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -73,7 +73,7 @@ export const getLoanApplications = async (token: string, page = 1, limit = 10): 
 // Admin login
 export const adminLogin = async (email: string, password: string): Promise<{ success: boolean; data?: any; error?: string }> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    const response = await fetch(getApiUrl('/auth/login'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ export const adminLogin = async (email: string, password: string): Promise<{ suc
 // Update application status (Admin only)
 export const updateApplicationStatus = async (token: string, applicationId: string, status: string): Promise<{ success: boolean; error?: string }> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/loan-applications/${applicationId}/status`, {
+    const response = await fetch(getApiUrl(`/loan-applications/${applicationId}/status`), {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -124,7 +124,7 @@ export const updateApplicationStatus = async (token: string, applicationId: stri
 // Update application data (Admin only)
 export const updateApplicationData = async (token: string, applicationId: string, updateData: Partial<LoanApplicationData>): Promise<{ success: boolean; error?: string }> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/loan-applications/${applicationId}`, {
+    const response = await fetch(getApiUrl(`/loan-applications/${applicationId}`), {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -149,7 +149,7 @@ export const updateApplicationData = async (token: string, applicationId: string
 // Get dashboard statistics (Admin only)
 export const getDashboardStats = async (token: string): Promise<{ success: boolean; data?: any; error?: string }> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/loan-applications/stats/dashboard`, {
+    const response = await fetch(getApiUrl('/loan-applications/stats/dashboard'), {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
