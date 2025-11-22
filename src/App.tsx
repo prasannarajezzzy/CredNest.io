@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ChevronDown, Check, X, Star, BarChart3, Calculator, TrendingUp, Clock, Menu, ArrowRight, MessageCircle, Shield, FileText, Headphones, Mail, Phone, User } from 'lucide-react';
 import { profileImages, handleImageError } from './assets/images';
+import LoanApplicationModal from './components/LoanApplicationModal';
+import AdminPortal from './components/AdminPortal';
 
 // Smooth scroll helper function
 const scrollToSection = (id: string) => {
@@ -29,7 +31,7 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
     e.preventDefault();
     
     // Create email content
-    const subject = `CrediNest Loan Inquiry from ${formData.name}`;
+    const subject = `CredNest Loan Inquiry from ${formData.name}`;
     const body = `
 Name: ${formData.name}
 Email: ${formData.email}
@@ -39,11 +41,11 @@ Message:
 ${formData.message}
 
 ---
-This inquiry was submitted through the CrediNest website contact form.
+This inquiry was submitted through the CredNest website contact form.
     `.trim();
     
     // Create mailto link
-    const mailtoLink = `mailto:prasannavadk@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const mailtoLink = `mailto:contact@crednest.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     
     // Open email client
     window.location.href = mailtoLink;
@@ -158,28 +160,55 @@ This inquiry was submitted through the CrediNest website contact form.
 
 // The main component which exports the entire replicated page.
 const App = () => {
+  const [isLoanModalOpen, setIsLoanModalOpen] = useState(false);
+  const [showAdminPortal, setShowAdminPortal] = useState(false);
+
+  // Check if current URL is admin route
+  React.useEffect(() => {
+    if (window.location.pathname === '/admin' || window.location.hash === '#admin') {
+      setShowAdminPortal(true);
+    }
+  }, []);
+
+  if (showAdminPortal) {
+    return <AdminPortal />;
+  }
+
   return (
     <div className="min-h-screen bg-white">
-      <Header />
+      <Header onGetStarted={() => setIsLoanModalOpen(true)} />
       <main>
-        <HeroSection />
+        <HeroSection onGetStarted={() => setIsLoanModalOpen(true)} />
         <PartnersSection />
         <ComparisonTable />
         <LoanTypesSection />
         <TestimonialsSection />
         <PersonalizedAdviceSection />
         <LoanCalculatorSection />
-        <OtherCalculators />
-        <LoanTipsSection />
+        {/* <OtherCalculators /> */}
+        {/* <LoanTipsSection /> */}
         <FAQSection />
       </main>
       <Footer />
+      <LoanApplicationModal 
+        isOpen={isLoanModalOpen} 
+        onClose={() => setIsLoanModalOpen(false)} 
+      />
+      
+      {/* Admin Access Button - Hidden but accessible via URL */}
+      <button
+        onClick={() => setShowAdminPortal(true)}
+        className="fixed bottom-4 right-4 p-2 bg-gray-800 text-white rounded-full opacity-20 hover:opacity-100 transition-opacity"
+        title="Admin Access"
+      >
+        <Shield className="w-5 h-5" />
+      </button>
     </div>
   );
 };
 
 // --- Component 1: Header ---
-const Header = () => {
+const Header = ({ onGetStarted }: { onGetStarted?: () => void }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
@@ -218,13 +247,13 @@ const Header = () => {
               Calculators
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-emerald-600 group-hover:w-full transition-all duration-300"></span>
             </button>
-            <button 
+            {/* <button 
               onClick={() => handleNavClick('resources')}
               className="hover:text-emerald-600 transition-colors duration-200 relative group py-2"
             >
               Resources
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-emerald-600 group-hover:w-full transition-all duration-300"></span>
-            </button>
+            </button> */}
             <button 
               onClick={() => handleNavClick('partners')}
               className="hover:text-emerald-600 transition-colors duration-200 relative group py-2"
@@ -323,20 +352,20 @@ const StatCard: React.FC<StatCardProps> = ({ value, label, icon }) => (
   </div>
 );
 
-const HeroSection = () => (
+const HeroSection = ({ onGetStarted }: { onGetStarted?: () => void }) => (
   <section id="hero" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:pt-32 lg:pb-20 flex flex-col lg:flex-row items-center justify-between">
     <div className="lg:w-5/12 text-center lg:text-left mb-12 lg:mb-0">
       <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-gray-900 leading-tight font-display">
-        Your Loans,
+        Best Loan Rates,
         <br />
-        <span className="text-emerald-600">Simplified</span>
+        <span className="text-emerald-600">CrediNest</span>
       </h1>
       <p className="mt-6 text-lg md:text-xl text-gray-600 leading-relaxed">
-        Smooth process, clear terms, fast approvals. From home loans to balance transfers, we make loans easy.
+        Get instant home loans, personal loans & balance transfers at lowest interest rates from 7.35% PA. Quick approval in 15-20 days with CrediNest - India's trusted loan partner.
       </p>
       <div className="mt-10 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
         <button 
-          onClick={() => scrollToSection('calculator')}
+          onClick={onGetStarted || (() => scrollToSection('calculator'))}
           className="flex-1 sm:flex-none text-base font-semibold text-white bg-gray-900 hover:bg-gray-800 py-4 px-10 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
         >
           Get Started
@@ -452,8 +481,8 @@ const TableRow: React.FC<TableRowProps> = ({ param, jugyahValue, traditionalValu
 const ComparisonTable = () => (
   <section id="comparison" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-20">
     <div className="text-center mb-12">
-      <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">Why Choose CrediNest? Compare Our Advantages</h2>
-        <p className="text-gray-600">See how CrediNest outperforms traditional loan processes</p>
+      <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">Why Choose CredNest? Compare Our Advantages</h2>
+        <p className="text-gray-600">See how CredNest outperforms traditional loan processes</p>
     </div>
     <div className="bg-gray-900 rounded-2xl p-8 shadow-2xl border border-gray-800">
       {/* Table Header */}
@@ -461,7 +490,7 @@ const ComparisonTable = () => (
         <div className="text-sm font-bold text-gray-400 uppercase tracking-wider">Features</div>
         <div className="text-sm font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-          CrediNest
+          CredNest
         </div>
         <div className="text-sm font-bold text-red-400 uppercase tracking-wider flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-red-400"></div>
@@ -544,18 +573,18 @@ const LoanTypesSection = () => {
   const loanTypes = [
     {
       icon: '/static/homeLoans.e211848b.svg',
-      title: 'I want to buy a home',
-      description: 'Get the best home loan rates and quick approvals'
+      title: 'Home Loans at Lowest Rates',
+      description: 'Get home loans from 7.35% PA with quick approval in 15-20 days. Compare 60+ banks instantly'
     },
     {
       icon: '/static/balanceTransfer.5fb1b642.svg',
-      title: 'Save interest on existing loan',
-      description: 'Transfer your loan and save on interest payments'
+      title: 'Balance Transfer & Save Interest',
+      description: 'Transfer your existing home loan and save up to ₹5 lakhs on interest payments with CrediNest'
     },
     {
       icon: '/static/loanAgainstProperty.996f26f0.svg',
-      title: 'I want loan against my property',
-      description: 'Unlock the value of your property with flexible loans'
+      title: 'Loan Against Property',
+      description: 'Get instant loan against property at competitive rates. Unlock your property value with CrediNest'
     }
   ];
 
@@ -569,8 +598,8 @@ const LoanTypesSection = () => {
       ></div>
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">Loan the smarter way with CrediNest</h2>
-        <p className="text-gray-600">Choose your loan type and get pre-approved in minutes</p>
+        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">Get Best Loan Rates with CrediNest</h2>
+        <p className="text-gray-600">Choose from home loans, personal loans, or balance transfer. Get pre-approved in minutes with lowest interest rates in India</p>
       </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {loanTypes.map((loan, index) => (
@@ -703,7 +732,7 @@ const TestimonialsSection = () => {
     { 
       name: 'Shubham Shine', 
       role: 'Software Engineer & Homeowner', 
-      review: "CrediNest transformed my home buying journey completely! As a first-time buyer, I was overwhelmed by the loan process, but their team guided me through every step. They secured me an interest rate that was 0.5% lower than what other banks offered. The digital documentation process saved me countless trips to the bank. What impressed me most was their transparency - no hidden charges, clear communication, and they delivered exactly what they promised. My loan was approved in just 12 days!", 
+      review: "CredNest transformed my home buying journey completely! As a first-time buyer, I was overwhelmed by the loan process, but their team guided me through every step. They secured me an interest rate that was 0.5% lower than what other banks offered. The digital documentation process saved me countless trips to the bank. What impressed me most was their transparency - no hidden charges, clear communication, and they delivered exactly what they promised. My loan was approved in just 12 days!", 
       rating: 5,
       image: profileImages.shubhamShine,
       isMain: true
@@ -711,21 +740,21 @@ const TestimonialsSection = () => {
     { 
       name: 'Neha Aggarwal', 
       role: 'Marketing Manager', 
-      review: "Outstanding service from CrediNest! They helped me with a balance transfer that saved me ₹3 lakhs in interest over the loan tenure. The team was professional, responsive, and made the entire process seamless. Highly recommend their expertise!", 
+      review: "Outstanding service from CredNest! They helped me with a balance transfer that saved me ₹3 lakhs in interest over the loan tenure. The team was professional, responsive, and made the entire process seamless. Highly recommend their expertise!", 
       rating: 5,
       image: profileImages.nehaAggarwal
     },
     { 
       name: 'Krishna Salunke', 
       role: 'Business Owner', 
-      review: "I needed a loan against property for business expansion. CrediNest not only got me the best rates but also ensured quick processing. Their relationship manager was available 24/7 to answer my queries. Excellent service and genuine care for customers.", 
+      review: "I needed a loan against property for business expansion. CredNest not only got me the best rates but also ensured quick processing. Their relationship manager was available 24/7 to answer my queries. Excellent service and genuine care for customers.", 
       rating: 5,
       image: profileImages.krishnaSalunke
     },
     { 
       name: 'Vishal Gupta', 
       role: 'Financial Consultant', 
-      review: "As someone in the finance industry, I appreciate CrediNest's professional approach and competitive rates. They provided multiple loan options and helped me choose the best one for my investment property. The entire process was transparent and efficient.", 
+      review: "As someone in the finance industry, I appreciate CredNest's professional approach and competitive rates. They provided multiple loan options and helped me choose the best one for my investment property. The entire process was transparent and efficient.", 
       rating: 5,
       image: profileImages.vishalGupta
     },
@@ -743,7 +772,7 @@ const TestimonialsSection = () => {
           <span className="text-red-500 ml-2">❤️</span>
         </h2>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-          Join thousands of satisfied customers who trusted CrediNest for their loan journey
+          Join thousands of satisfied customers who trusted CredNest for their loan journey
         </p>
         <div className="flex items-center justify-center gap-6 mt-6">
           <div className="flex items-center gap-2">
@@ -774,7 +803,7 @@ const TestimonialsSection = () => {
       <div className="text-center mt-12">
         <div className="bg-gradient-to-r from-emerald-50 to-blue-50 p-8 rounded-2xl border border-emerald-200">
           <h3 className="text-2xl font-bold text-gray-900 mb-3">Ready to join our satisfied customers?</h3>
-          <p className="text-gray-600 mb-6">Experience the CrediNest difference - transparent, fast, and customer-focused loan services.</p>
+          <p className="text-gray-600 mb-6">Experience the CredNest difference - transparent, fast, and customer-focused loan services.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
               onClick={() => scrollToSection('calculator')}
@@ -804,9 +833,9 @@ const PersonalizedAdviceSection = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Left Card */}
       <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-lg">
-        <h3 className="text-2xl font-bold text-gray-900 mb-4 font-display">Personalized Advice from CrediNest</h3>
+        <h3 className="text-2xl font-bold text-gray-900 mb-4 font-display">Personalized Advice from CredNest</h3>
         <p className="text-gray-600 mb-6 leading-relaxed">
-          Get expert guidance and 24/7 support tailored to your unique needs with CrediNest's dedicated team.
+          Get expert guidance and 24/7 support tailored to your unique needs with CredNest's dedicated team.
         </p>
         <img 
           src="/static/UspImage1.e49abf01.webp" 
@@ -820,9 +849,9 @@ const PersonalizedAdviceSection = () => (
 
       {/* Right Card */}
       <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-lg">
-        <h3 className="text-2xl font-bold text-gray-900 mb-4 font-display">Talk to a CrediNest expert now!</h3>
+        <h3 className="text-2xl font-bold text-gray-900 mb-4 font-display">Talk to a CredNest expert now!</h3>
         <p className="text-gray-600 mb-6 leading-relaxed">
-          Our CrediNest loan agents can handle everything for you.
+          Our CredNest loan agents can handle everything for you.
         </p>
         <div className="grid grid-cols-2 gap-4 mb-6">
           <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
@@ -925,8 +954,8 @@ const LoanCalculatorSection = () => {
   return (
     <section id="calculator" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">CrediNest EMI Calculator</h2>
-        <p className="text-gray-600">Calculate your monthly EMI instantly with CrediNest</p>
+        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">CredNest EMI Calculator</h2>
+        <p className="text-gray-600">Calculate your monthly EMI instantly with CredNest</p>
       </div>
       <div className="bg-white p-8 md:p-10 rounded-2xl border border-gray-200 shadow-xl grid grid-cols-1 lg:grid-cols-2 gap-10">
         {/* Left: Input Controls */}
@@ -987,7 +1016,7 @@ const LoanCalculatorSection = () => {
           </div>
 
           <div className="bg-gray-900 text-white p-6 rounded-xl">
-            <p className="text-sm mb-4">Know your options. Unlock your home loan journey with CrediNest.</p>
+            <p className="text-sm mb-4">Know your options. Unlock your home loan journey with CredNest.</p>
             <div className="flex flex-col sm:flex-row gap-3">
               <button 
                 onClick={() => scrollToSection('comparison')}
@@ -1035,7 +1064,7 @@ const CalcCard: React.FC<CalcCardProps> = ({ icon: Icon, title, description }) =
 const OtherCalculators = () => (
   <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
     <div className="text-center mb-12">
-      <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">Try CrediNest's Other Calculators</h2>
+      <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">Try CredNest's Other Calculators</h2>
       <p className="text-gray-600">Powerful tools to help you make informed financial decisions</p>
     </div>
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -1127,8 +1156,8 @@ const LoanTipsSection = () => {
   return (
     <section id="resources" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-gray-200">
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">CrediNest Loan Tips And Guide</h2>
-        <p className="text-gray-600">Your CrediNest Guide to Property & Loans Trends</p>
+        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">CredNest Loan Tips And Guide</h2>
+        <p className="text-gray-600">Your CredNest Guide to Property & Loans Trends</p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {tips.map((tip, index) => (
@@ -1172,30 +1201,38 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
 const FAQSection = () => (
   <section id="faq" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
     <div className="text-center mb-12">
-      <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">Frequently asked questions</h2>
-      <p className="text-gray-600">Everything you need to know about CrediNest services</p>
+      <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">Home Loan & Personal Loan FAQs</h2>
+      <p className="text-gray-600">Everything you need to know about CrediNest loan services, interest rates, and approval process</p>
     </div>
     <div className="max-w-4xl mx-auto">
       <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-xl">
         <FAQItem
-          question="How does the CIBIL score affect interest rates?"
-          answer="Your CIBIL score is a critical factor in determining your loan interest rate. A higher score (750+) typically qualifies you for the best rates, while lower scores may result in higher interest rates or loan rejection. Lenders use this score to assess your creditworthiness and risk level."
+          question="What are the lowest home loan interest rates available in India?"
+          answer="CrediNest offers home loans starting from 7.35% PA, which are among the lowest rates in India. Interest rates vary based on your CIBIL score, income, loan amount, and tenure. With a good credit score (750+), you can get the best rates from our 60+ partner banks."
         />
         <FAQItem
-          question="Factors you should consider before getting a loan."
-          answer="Before applying for a loan, consider: your credit score, income stability, existing debts, loan amount needed, interest rates, tenure, EMI affordability, prepayment options, and hidden charges. It's also important to compare offers from multiple lenders and understand all terms and conditions."
+          question="How quickly can I get loan approval with CrediNest?"
+          answer="CrediNest provides quick loan approval in just 15-20 days. Our streamlined process includes instant pre-approval, digital documentation, and dedicated relationship managers to ensure faster processing compared to traditional banks."
         />
         <FAQItem
-          question="What are the benefits of taking a pre-approved loan?"
-          answer="Pre-approved loans offer several advantages: faster processing, better negotiation power, clarity on eligible amount, improved credibility with sellers, and the ability to plan your finances better. They also help you understand your loan eligibility before you start house hunting."
+          question="What types of loans does CrediNest offer?"
+          answer="CrediNest specializes in home loans, personal loans, loan against property, and balance transfers. We offer competitive rates starting from 7.35% PA with flexible tenure options from 5-30 years depending on the loan type."
         />
         <FAQItem
-          question="What are pre-approved loan documents that you need?"
-          answer="For pre-approval, you typically need: identity proof (Aadhaar, PAN), address proof, income proof (salary slips, bank statements), employment certificate, IT returns, and property documents (if available). The exact requirements may vary by lender."
+          question="How does balance transfer save money on existing loans?"
+          answer="Balance transfer with CrediNest can save you up to ₹5 lakhs on interest payments. By transferring your existing loan to a lower interest rate, you reduce your EMI burden and total interest outgo. Our experts help you compare rates and choose the best option."
         />
         <FAQItem
-          question="What is the maximum home loan I can get?"
-          answer="The maximum home loan amount depends on several factors: your income, credit score, existing liabilities, property value, and lender policies. Generally, lenders offer up to 80-90% of the property value, with the maximum loan amount typically being 5-10 times your annual income, subject to your repayment capacity."
+          question="What documents are required for CrediNest loan application?"
+          answer="For loan application, you need: Aadhaar card, PAN card, salary slips (3 months), bank statements (6 months), Form 16, employment certificate, and property documents (for home loans). Our digital process makes document submission quick and easy."
+        />
+        <FAQItem
+          question="How does CIBIL score affect loan interest rates?"
+          answer="Your CIBIL score significantly impacts loan interest rates. A score of 750+ qualifies for the lowest rates starting from 7.35% PA. Lower scores may result in higher rates or rejection. CrediNest helps improve your loan eligibility with expert guidance."
+        />
+        <FAQItem
+          question="What is the maximum loan amount I can get from CrediNest?"
+          answer="The maximum loan amount depends on your income, CIBIL score, and property value. CrediNest offers home loans up to ₹10 crores, personal loans up to ₹50 lakhs, and loan against property up to 70% of property value. Use our EMI calculator to check eligibility."
         />
       </div>
     </div>
@@ -1231,8 +1268,22 @@ const Footer = () => (
         <div className="col-span-2 lg:col-span-1 space-y-5">
           <div className="flex items-center">
             <span className="text-2xl font-bold text-white">
-              CrediNest
+              CredNest
             </span>
+          </div>
+          <div className="space-y-3">
+            <div className="flex items-center space-x-2 text-gray-400">
+              <Mail className="w-4 h-4" />
+              <a href="mailto:contact@crednest.io" className="hover:text-emerald-400 transition-colors text-sm">
+                contact@crednest.io
+              </a>
+            </div>
+            <div className="flex items-center space-x-2 text-gray-400">
+              <Phone className="w-4 h-4" />
+              <a href="tel:+917021904923" className="hover:text-emerald-400 transition-colors text-sm">
+                +91 70219 04923
+              </a>
+            </div>
           </div>
           <div className="flex space-x-4">
             <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors">
@@ -1249,12 +1300,20 @@ const Footer = () => (
 
         {/* Link Groups */}
         <FooterLinkGroup
+          title="Loan Services"
+          links={['Home Loans', 'Personal Loans', 'Balance Transfer', 'Loan Against Property', 'EMI Calculator']}
+        />
+        <FooterLinkGroup
           title="Company"
-          links={['About Us', 'For Landlords', 'Contact Us']}
+          links={['About CrediNest', 'Contact Us', 'Careers', 'Partner Banks']}
+        />
+        <FooterLinkGroup
+          title="Resources"
+          links={['Loan Calculator', 'Interest Rates', 'Eligibility Check', 'Loan Guide', 'CIBIL Score']}
         />
         <FooterLinkGroup
           title="Support"
-          links={['Help Centre', 'Terms of use', 'Privacy Policy', 'Refund Policy']}
+          links={['Help Centre', 'Terms of use', 'Privacy Policy', 'Loan FAQs']}
         />
 
         {/* Powered By Section */}
@@ -1271,7 +1330,7 @@ const Footer = () => (
       {/* Copyright */}
       <div className="mt-12 pt-8 border-t border-gray-800 text-center">
         <p className="text-sm text-gray-400">
-          Copyright © 2023 CrediNest. All rights reserved.
+          Copyright © 2024 CrediNest. All rights reserved. | Best Home Loans & Personal Loans in India
         </p>
       </div>
 
@@ -1283,16 +1342,12 @@ const Footer = () => (
               CN
             </div>
             <div>
-              <p className="text-white font-semibold">Love where you live with CrediNest</p>
+              <p className="text-white font-semibold">Get Best Loan Rates with CrediNest</p>
               <p className="text-sm text-gray-400 mt-1">
-                CrediNest is India's fastest-growing technology-enabled loan platform. Our mission is to make home loans simple and help people love where they live.
+                CrediNest is India's leading loan platform offering home loans, personal loans & balance transfers at lowest interest rates from 7.35% PA. Quick approval in 15-20 days with 60+ partner banks.
               </p>
             </div>
           </div>
-          <button className="text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 py-3 px-6 rounded-xl transition-all duration-300 shadow-md flex items-center gap-2">
-            Start Exploring
-            <ArrowRight className="w-4 h-4" />
-          </button>
         </div>
       </div>
     </div>

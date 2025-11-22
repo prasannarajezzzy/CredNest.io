@@ -46,3 +46,4 @@ If build doesn't work properly:
 - **Images still not showing?** Check browser developer tools (F12) → Network tab for 404 errors
 - **Wrong paths?** Verify the exact file paths in your hosting file manager
 - **Case sensitivity?** Ensure filenames match exactly (including spaces and capitalization)
+

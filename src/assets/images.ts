@@ -1,4 +1,4 @@
-// Image assets configuration for CrediNest
+// Image assets configuration for CredNest
 // This ensures images are properly bundled and accessible
 
 // Profile images
