@@ -16,7 +16,7 @@ Disallow: /_next/
 Disallow: /api/
 
 # Sitemap location
-Sitemap: https://credinest.com/sitemap.xml
+Sitemap: https://CredNest.com/sitemap.xml
 
 # Crawl delay (optional)
 Crawl-delay: 1

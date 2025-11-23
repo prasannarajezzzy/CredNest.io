@@ -159,7 +159,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, adminData, onLog
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">CrediNest Admin</h1>
+              <h1 className="text-2xl font-bold text-gray-900">CredNest Admin</h1>
               <span className="ml-4 text-sm text-gray-500">Loan Management Portal</span>
             </div>
             <div className="flex items-center space-x-4">

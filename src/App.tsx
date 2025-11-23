@@ -227,7 +227,7 @@ const Header = () => {
             className="flex items-center cursor-pointer"
           >
             <span className="text-2xl font-bold text-gray-900">
-              CrediNest
+              CredNest
             </span>
           </a>
           
@@ -358,10 +358,10 @@ const HeroSection = ({ onGetStarted }: { onGetStarted?: () => void }) => (
       <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-gray-900 leading-tight font-display">
         Best Loan Rates,
         <br />
-        <span className="text-emerald-600">CrediNest</span>
+        <span className="text-emerald-600">CredNest</span>
       </h1>
       <p className="mt-6 text-lg md:text-xl text-gray-600 leading-relaxed">
-        Get instant home loans, personal loans & balance transfers at lowest interest rates from 7.35% PA. Quick approval in 15-20 days with CrediNest - India's trusted loan partner.
+        Get instant home loans, personal loans & balance transfers at lowest interest rates from 7.35% PA. Quick approval in 15-20 days with CredNest - India's trusted loan partner.
       </p>
       <div className="mt-10 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
         <button 
@@ -579,12 +579,12 @@ const LoanTypesSection = () => {
     {
       icon: '/static/balanceTransfer.5fb1b642.svg',
       title: 'Balance Transfer & Save Interest',
-      description: 'Transfer your existing home loan and save up to ₹5 lakhs on interest payments with CrediNest'
+      description: 'Transfer your existing home loan and save up to ₹5 lakhs on interest payments with CredNest'
     },
     {
       icon: '/static/loanAgainstProperty.996f26f0.svg',
       title: 'Loan Against Property',
-      description: 'Get instant loan against property at competitive rates. Unlock your property value with CrediNest'
+      description: 'Get instant loan against property at competitive rates. Unlock your property value with CredNest'
     }
   ];
 
@@ -598,7 +598,7 @@ const LoanTypesSection = () => {
       ></div>
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">Get Best Loan Rates with CrediNest</h2>
+        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">Get Best Loan Rates with CredNest</h2>
         <p className="text-gray-600">Choose from home loans, personal loans, or balance transfer. Get pre-approved in minutes with lowest interest rates in India</p>
       </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -1210,37 +1210,37 @@ const FAQSection = () => (
   <section id="faq" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
     <div className="text-center mb-12">
       <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 font-display">Home Loan & Personal Loan FAQs</h2>
-      <p className="text-gray-600">Everything you need to know about CrediNest loan services, interest rates, and approval process</p>
+      <p className="text-gray-600">Everything you need to know about CredNest loan services, interest rates, and approval process</p>
     </div>
     <div className="max-w-4xl mx-auto">
       <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-xl">
         <FAQItem
           question="What are the lowest home loan interest rates available in India?"
-          answer="CrediNest offers home loans starting from 7.35% PA, which are among the lowest rates in India. Interest rates vary based on your CIBIL score, income, loan amount, and tenure. With a good credit score (750+), you can get the best rates from our 60+ partner banks."
+          answer="CredNest offers home loans starting from 7.35% PA, which are among the lowest rates in India. Interest rates vary based on your CIBIL score, income, loan amount, and tenure. With a good credit score (750+), you can get the best rates from our 60+ partner banks."
         />
         <FAQItem
-          question="How quickly can I get loan approval with CrediNest?"
-          answer="CrediNest provides quick loan approval in just 15-20 days. Our streamlined process includes instant pre-approval, digital documentation, and dedicated relationship managers to ensure faster processing compared to traditional banks."
+          question="How quickly can I get loan approval with CredNest?"
+          answer="CredNest provides quick loan approval in just 15-20 days. Our streamlined process includes instant pre-approval, digital documentation, and dedicated relationship managers to ensure faster processing compared to traditional banks."
         />
         <FAQItem
-          question="What types of loans does CrediNest offer?"
-          answer="CrediNest specializes in home loans, personal loans, loan against property, and balance transfers. We offer competitive rates starting from 7.35% PA with flexible tenure options from 5-30 years depending on the loan type."
+          question="What types of loans does CredNest offer?"
+          answer="CredNest specializes in home loans, personal loans, loan against property, and balance transfers. We offer competitive rates starting from 7.35% PA with flexible tenure options from 5-30 years depending on the loan type."
         />
         <FAQItem
           question="How does balance transfer save money on existing loans?"
-          answer="Balance transfer with CrediNest can save you up to ₹5 lakhs on interest payments. By transferring your existing loan to a lower interest rate, you reduce your EMI burden and total interest outgo. Our experts help you compare rates and choose the best option."
+          answer="Balance transfer with CredNest can save you up to ₹5 lakhs on interest payments. By transferring your existing loan to a lower interest rate, you reduce your EMI burden and total interest outgo. Our experts help you compare rates and choose the best option."
         />
         <FAQItem
-          question="What documents are required for CrediNest loan application?"
+          question="What documents are required for CredNest loan application?"
           answer="For loan application, you need: Aadhaar card, PAN card, salary slips (3 months), bank statements (6 months), Form 16, employment certificate, and property documents (for home loans). Our digital process makes document submission quick and easy."
         />
         <FAQItem
           question="How does CIBIL score affect loan interest rates?"
-          answer="Your CIBIL score significantly impacts loan interest rates. A score of 750+ qualifies for the lowest rates starting from 7.35% PA. Lower scores may result in higher rates or rejection. CrediNest helps improve your loan eligibility with expert guidance."
+          answer="Your CIBIL score significantly impacts loan interest rates. A score of 750+ qualifies for the lowest rates starting from 7.35% PA. Lower scores may result in higher rates or rejection. CredNest helps improve your loan eligibility with expert guidance."
         />
         <FAQItem
-          question="What is the maximum loan amount I can get from CrediNest?"
-          answer="The maximum loan amount depends on your income, CIBIL score, and property value. CrediNest offers home loans up to ₹10 crores, personal loans up to ₹50 lakhs, and loan against property up to 70% of property value. Use our EMI calculator to check eligibility."
+          question="What is the maximum loan amount I can get from CredNest?"
+          answer="The maximum loan amount depends on your income, CIBIL score, and property value. CredNest offers home loans up to ₹10 crores, personal loans up to ₹50 lakhs, and loan against property up to 70% of property value. Use our EMI calculator to check eligibility."
         />
       </div>
     </div>
@@ -1313,7 +1313,7 @@ const Footer = () => (
         />
         <FooterLinkGroup
           title="Company"
-          links={['About CrediNest', 'Contact Us', 'Careers', 'Partner Banks']}
+          links={['About CredNest', 'Contact Us', 'Careers', 'Partner Banks']}
         />
         <FooterLinkGroup
           title="Resources"
@@ -1338,7 +1338,7 @@ const Footer = () => (
       {/* Copyright */}
       <div className="mt-12 pt-8 border-t border-gray-800 text-center">
         <p className="text-sm text-gray-400">
-          Copyright © 2024 CrediNest. All rights reserved. | Best Home Loans & Personal Loans in India
+          Copyright © 2024 CredNest. All rights reserved. | Best Home Loans & Personal Loans in India
         </p>
       </div>
 
@@ -1350,9 +1350,9 @@ const Footer = () => (
               CN
             </div>
             <div>
-              <p className="text-white font-semibold">Get Best Loan Rates with CrediNest</p>
+              <p className="text-white font-semibold">Get Best Loan Rates with CredNest</p>
               <p className="text-sm text-gray-400 mt-1">
-                CrediNest is India's leading loan platform offering home loans, personal loans & balance transfers at lowest interest rates from 7.35% PA. Quick approval in 15-20 days with 60+ partner banks.
+                CredNest is India's leading loan platform offering home loans, personal loans & balance transfers at lowest interest rates from 7.35% PA. Quick approval in 15-20 days with 60+ partner banks.
               </p>
             </div>
           </div>

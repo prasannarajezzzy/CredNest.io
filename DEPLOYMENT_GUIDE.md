@@ -1,4 +1,4 @@
-# 🚀 CrediNest Frontend Deployment Guide
+# 🚀 CredNest Frontend Deployment Guide
 
 ## 📋 Pre-Deployment Checklist
 
@@ -183,7 +183,7 @@ curl https://crednest-backend.onrender.com/api/loan-applications
 
 ## 🎉 Success!
 
-Once deployed, your CrediNest website will be:
+Once deployed, your CredNest website will be:
 - ✅ **Live and accessible** to users worldwide
 - ✅ **SEO optimized** for loan-related searches
 - ✅ **Fully functional** with backend integration
