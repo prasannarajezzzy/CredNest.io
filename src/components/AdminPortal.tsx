@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminLogin from './AdminLogin';
 import AdminDashboardEditable from './AdminDashboardEditable';
+import { validateToken } from '../utils/auth';
 
 const AdminPortal: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -8,10 +9,17 @@ const AdminPortal: React.FC = () => {
   const [adminData, setAdminData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    setToken('');
+    setAdminData(null);
+    setIsAuthenticated(false);
+  };
+
   useEffect(() => {
     // Check if user is already logged in
     const savedToken = localStorage.getItem('adminToken');
-    if (savedToken) {
+    if (savedToken && validateToken(savedToken, handleLogout)) {
       setToken(savedToken);
       setIsAuthenticated(true);
       // Set default admin data if not available
@@ -27,13 +35,6 @@ const AdminPortal: React.FC = () => {
     setToken(authToken);
     setAdminData(userData);
     setIsAuthenticated(true);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    setToken('');
-    setAdminData(null);
-    setIsAuthenticated(false);
   };
 
   if (isLoading) {

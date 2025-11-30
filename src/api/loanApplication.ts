@@ -47,7 +47,7 @@ export const saveLoanApplication = async (data: LoanApplicationData): Promise<{ 
 };
 
 // Get all loan applications (Admin only)
-export const getLoanApplications = async (token: string, page = 1, limit = 10): Promise<{ success: boolean; data?: any; error?: string }> => {
+export const getLoanApplications = async (token: string, page = 1, limit = 10): Promise<{ success: boolean; data?: any; error?: string; expired?: boolean }> => {
   try {
     const response = await fetch(getApiUrl(`/loan-applications?page=${page}&limit=${limit}`), {
       method: 'GET',
@@ -58,6 +58,12 @@ export const getLoanApplications = async (token: string, page = 1, limit = 10): 
     });
 
     const result = await response.json();
+
+    if (response.status === 401) {
+      // Token expired or invalid
+      localStorage.removeItem('adminToken');
+      return { success: false, error: result.message || 'Session expired', expired: true };
+    }
 
     if (response.ok && result.success) {
       return { success: true, data: result.data };
@@ -147,7 +153,7 @@ export const updateApplicationData = async (token: string, applicationId: string
 };
 
 // Get dashboard statistics (Admin only)
-export const getDashboardStats = async (token: string): Promise<{ success: boolean; data?: any; error?: string }> => {
+export const getDashboardStats = async (token: string): Promise<{ success: boolean; data?: any; error?: string; expired?: boolean }> => {
   try {
     const response = await fetch(getApiUrl('/loan-applications/stats/dashboard'), {
       method: 'GET',
@@ -158,6 +164,12 @@ export const getDashboardStats = async (token: string): Promise<{ success: boole
     });
 
     const result = await response.json();
+
+    if (response.status === 401) {
+      // Token expired or invalid
+      localStorage.removeItem('adminToken');
+      return { success: false, error: result.message || 'Session expired', expired: true };
+    }
 
     if (response.ok && result.success) {
       return { success: true, data: result.data };

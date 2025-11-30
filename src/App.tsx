@@ -3,6 +3,7 @@ import { ChevronDown, Check, X, Star, TrendingUp, Menu, ArrowRight, MessageCircl
 import { profileImages, handleImageError } from './assets/images';
 import LoanApplicationModal from './components/LoanApplicationModal';
 import AdminPortal from './components/AdminPortal';
+import { submitContactQuery } from './api/contactQuery';
 
 // Smooth scroll helper function
 const scrollToSection = (id: string) => {
@@ -26,37 +27,39 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
     phone: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Create email content
-    const subject = `CredNest Loan Inquiry from ${formData.name}`;
-    const body = `
-Name: ${formData.name}
-Email: ${formData.email}
-Phone: ${formData.phone}
+    setIsSubmitting(true);
+    setSubmitMessage(null);
 
-Message:
-${formData.message}
-
----
-This inquiry was submitted through the CredNest website contact form.
-    `.trim();
-    
-    // Create mailto link
-    const mailtoLink = `mailto:contact@crednest.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    // Open email client
-    window.location.href = mailtoLink;
-    
-    onClose();
-    // Reset form
-    setFormData({ name: '', email: '', phone: '', message: '' });
+    try {
+      const result = await submitContactQuery(formData);
+      
+      if (result.success) {
+        setSubmitMessage({ type: 'success', text: result.message || 'Your message has been sent successfully! We will get back to you soon.' });
+        // Reset form
+        setFormData({ name: '', email: '', phone: '', message: '' });
+        // Close modal after 2 seconds
+        setTimeout(() => {
+          onClose();
+          setSubmitMessage(null);
+        }, 2000);
+      } else {
+        setSubmitMessage({ type: 'error', text: result.error || 'Failed to send message. Please try again.' });
+      }
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      setSubmitMessage({ type: 'error', text: 'An error occurred. Please try again later.' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleWhatsApp = () => {
-    window.open('https://wa.me/917021904923', '_blank');
+    window.open('https://wa.me/919987023845', '_blank');
     onClose();
   };
 
@@ -73,6 +76,24 @@ This inquiry was submitted through the CredNest website contact form.
         </button>
         
         <h2 className="text-2xl font-bold text-gray-900 mb-6 font-display">Contact Us</h2>
+        
+        <div className="mb-6 p-4 bg-gray-50 rounded-xl border border-gray-200">
+          <p className="text-sm font-semibold text-gray-700 mb-3">📞 Contact Details</p>
+          <div className="space-y-2 text-sm text-gray-600">
+            <div className="flex items-center gap-2">
+              <Phone className="w-4 h-4 text-emerald-600" />
+              <a href="tel:+919987023845" className="hover:text-emerald-600 transition-colors">
+                +91 99870 23845
+              </a>
+            </div>
+            <div className="flex items-center gap-2">
+              <Mail className="w-4 h-4 text-emerald-600" />
+              <a href="mailto:contact@crednest.io" className="hover:text-emerald-600 transition-colors">
+                contact@crednest.io
+              </a>
+            </div>
+          </div>
+        </div>
         
         <div className="space-y-4 mb-6">
           <button
@@ -145,11 +166,21 @@ This inquiry was submitted through the CredNest website contact form.
               />
             </div>
             
+            {submitMessage && (
+              <div className={`p-3 rounded-lg text-sm ${
+                submitMessage.type === 'success' 
+                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' 
+                  : 'bg-red-50 text-red-700 border border-red-200'
+              }`}>
+                {submitMessage.text}
+              </div>
+            )}
             <button
               type="submit"
-              className="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 px-4 rounded-xl transition-all duration-300 shadow-md font-semibold"
+              disabled={isSubmitting}
+              className="w-full bg-gray-900 hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed text-white py-3 px-4 rounded-xl transition-all duration-300 shadow-md font-semibold"
             >
-              Send Message
+              {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
           </form>
         </div>
@@ -224,10 +255,16 @@ const Header = () => {
           <a 
             href="#hero" 
             onClick={(e) => { e.preventDefault(); handleNavClick('hero'); }}
-            className="flex items-center cursor-pointer"
+            className="flex items-center gap-2 cursor-pointer"
           >
-            <span className="text-2xl font-bold text-gray-900">
-              CredNest
+            <img 
+              src="/static/icons/icon.svg" 
+              alt="CredNest Logo" 
+              className="h-8 w-8"
+            />
+            <span className="text-2xl font-bold">
+              <span className="text-gray-900">CredNest.</span>
+              <span className="text-emerald-600">io</span>
             </span>
           </a>
           
@@ -363,7 +400,7 @@ const HeroSection = ({ onGetStarted }: { onGetStarted?: () => void }) => (
       <p className="mt-6 text-lg md:text-xl text-gray-600 leading-relaxed">
         Get instant home loans, personal loans & balance transfers at lowest interest rates from 7.35% PA. Quick approval in 15-20 days with CredNest - India's trusted loan partner.
       </p>
-      <div className="mt-10 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+      <div className="mt-10 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center lg:justify-start">
         <button 
           onClick={onGetStarted || (() => scrollToSection('calculator'))}
           className="flex-1 sm:flex-none text-base font-semibold text-white bg-gray-900 hover:bg-gray-800 py-4 px-10 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
@@ -372,7 +409,7 @@ const HeroSection = ({ onGetStarted }: { onGetStarted?: () => void }) => (
           <ArrowRight className="w-5 h-5" />
         </button>
         <a 
-          href="https://wa.me/917021904923"
+          href="https://wa.me/919987023845"
           target="_blank"
           rel="noopener noreferrer"
           className="flex-1 sm:flex-none text-base font-semibold text-gray-700 bg-white border-2 border-gray-200 hover:border-emerald-300 hover:text-emerald-700 py-4 px-10 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
@@ -812,7 +849,7 @@ const TestimonialsSection = () => {
               Calculate Your EMI
             </button>
             <a 
-              href="https://wa.me/917021904923"
+              href="https://wa.me/919987023845"
               target="_blank"
               rel="noopener noreferrer"
               className="text-base font-semibold text-emerald-700 bg-white border-2 border-emerald-200 hover:border-emerald-300 hover:bg-emerald-50 py-3 px-8 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
@@ -884,7 +921,7 @@ const PersonalizedAdviceSection = () => (
             Get in Touch
           </button>
           <a 
-            href="https://wa.me/917021904923"
+            href="https://wa.me/919987023845"
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 text-base font-semibold text-white bg-emerald-600 hover:bg-emerald-700 py-3 px-6 rounded-xl transition-all duration-300 shadow-md flex items-center justify-center gap-2"
@@ -1025,7 +1062,7 @@ const LoanCalculatorSection = () => {
                 Find Now
               </button>
               <a 
-                href="https://wa.me/917021904923"
+                href="https://wa.me/919987023845"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 text-base font-semibold text-white bg-gray-800 hover:bg-gray-700 py-3 rounded-xl transition-all duration-300 shadow-md flex items-center justify-center gap-2"
@@ -1288,8 +1325,8 @@ const Footer = () => (
             </div>
             <div className="flex items-center space-x-2 text-gray-400">
               <Phone className="w-4 h-4" />
-              <a href="tel:+917021904923" className="hover:text-emerald-400 transition-colors text-sm">
-                +91 70219 04923
+              <a href="tel:+919987023845" className="hover:text-emerald-400 transition-colors text-sm">
+                +91 99870 23845
               </a>
             </div>
           </div>
